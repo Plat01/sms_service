@@ -1,0 +1,17 @@
+# Python
+__pycache__
+app.egg-info
+*.pyc
+.mypy_cache
+.coverage
+htmlcov
+.venv
+
+/db_backup
+.gitignore
+.env.examle
+README.md
+/.idea
+/.vscode
+
+/src/test

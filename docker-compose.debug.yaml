@@ -1,0 +1,57 @@
+services:
+  sms-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sms-app
+    ports:
+      - "${API_PORT}:8000"
+      - "5678:5678"
+    command: 
+      sh -c "pip install debugpy && python3 -m debugpy --listen 0.0.0.0:5678 
+      -m uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"
+    # command: "uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"
+    env_file:
+      - ./.env
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - postgres
+
+  redis:
+    image: "redis:alpine" 
+    container_name: redis
+    ports:
+      - "6378:${REDIS_PORT}"  # not canonical local redic  port)))
+
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    environment:
+      - REDIS_HOSTS=local:${REDIS_HOST}:${REDIS_PORT}
+    ports:
+      - "8081:8081"
+    restart: "no"
+    depends_on:
+      - redis
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    ports:
+      - "5433:${POSTGRES_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+      

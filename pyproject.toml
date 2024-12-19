@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "smsservice"
+version = "0.1.0"
+description = "SMS service"
+authors = ["Shutov Dmitrii <fplatoff@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.115.0"
+pydantic-settings = "^2.5.2"
+gunicorn = "^23.0.0"
+redis = "^5.1.0"
+pyjwt = "^2.9.0"
+aiohttp = "^3.10.8"
+alembic = {extras = ["asyncpg"], version = "^1.13.3"}
+asyncpg = "^0.29.0"
+sqlmodel = "^0.0.22"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
